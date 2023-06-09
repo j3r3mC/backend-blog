@@ -11,7 +11,7 @@ module.exports = app => {
 
     app.get("/user/:id", users.getUserById);
 
-    app.post("/user",auth,users.postEditUser);
+    app.post("/user/edit",auth,users.postEditUser);
 
     app.post("/user/delete", auth, users.postDeleteUser);
  

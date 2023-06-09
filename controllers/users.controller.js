@@ -1,7 +1,6 @@
-var  bcryptjs  = require ( "bcryptjs" ) ;
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
-const user = require("../models/user");
+const bcryptjs  = require ( "bcryptjs" ) ;
+const jwt     = require ( "jsonwebtoken" );
+const User    = require ( "../models/user.model" );
 
 
 exports.create = async (req, res) => {
@@ -10,7 +9,7 @@ exports.create = async (req, res) => {
         if(!(name, email, password)){
             res.status(400).send("All input is required");
         }
-        const oldUser =  await User.findOne({email});
+        const oldUser =  await User.findOne( { email } );
         console.log(oldUser)
 
         if(oldUser) {
@@ -26,8 +25,8 @@ exports.create = async (req, res) => {
         });
 
          const token= jwt.sign(
-            {user_id: user._id, email},
-            `${process.env.TOKEN_KEY}`
+            { user_id: user._id, email },
+            `${ process.env.TOKEN_KEY }`
         );
         user.token = token;
 
@@ -53,7 +52,7 @@ exports.signIn = async (req, res) => {
       // Create token
       const token = jwt.sign(
         { user_id: user._id, email },
-        process.env.TOKEN_KEY,
+        `${ process.env.TOKEN_KEY }`,
         {
           expiresIn: "2h",
         }

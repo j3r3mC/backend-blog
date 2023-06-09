@@ -9,6 +9,7 @@ app.use(express.json());
 
 
 require("./routes/user.routes")(app);
+require("./routes/tutorial.routes")(app);
 
 
 module.exports = app;
