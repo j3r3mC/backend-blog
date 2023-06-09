@@ -7,4 +7,4 @@ const port = process.env.PORT || API_PORT;
 
 server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-})
+});
