@@ -1,6 +1,7 @@
 var  bcryptjs  = require ( "bcryptjs" ) ;
 const jwt = require("jsonwebtoken");
-const User = require("../model/user");
+const User = require("../models/user");
+const user = require("../models/user");
 
 
 exports.create = async (req, res) => {
@@ -72,4 +73,66 @@ exports.signIn = async (req, res) => {
        res.status(400).send("Invalid Credentials");
      }
      // Our register logic ends here      
-} 
+}
+
+exports.getAllUsers = (req, res) => {
+  User.find()
+      .then(data => {
+          res.send(data);
+      })
+      .catch(err => {
+          res.status(500).send({
+              message:
+                  err.message || "Some error occurred while retrieving users."
+          });
+      });
+};
+
+exports.getUserById = (req, res) => {
+  const id = req.params.id;
+
+  User.findById(id)
+      .then(data => {
+          if (data) {
+              res.send(data);
+          } else {
+              res.status(404).send({
+                  message: `Cannot find User with id=${id}.`
+              });
+          }
+      })
+      .catch(err => {
+          res.status(500).send({
+              message: "Error retrieving User with id=" + id
+          });
+      });
+
+}
+
+exports.postEditUser = async (req, res, next) => {
+  const id = req.body.id
+  const updatedName = req.body.name;
+  const updatedEmail = req.body.email;
+  try {
+    await User.findByIdAndUpdate(id, {
+      name: updatedName,
+      email: updatedEmail     
+    });
+    res.send(req.body);
+    //res.redirect("/");
+  } catch (err) {
+    console.log(err)
+  }
+
+};
+
+exports.postDeleteUser = async (req, res, next) => {
+  const id = req.body.id;
+  try {
+    await User.findByIdAndRemove(id);
+    res.status(202).send("User was delete successfully!");
+    //res.redirect("/");
+  } catch (err) {
+    console.log(err)
+  }  
+};
