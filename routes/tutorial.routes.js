@@ -5,13 +5,13 @@ module.exports = app => {
 
     app.post("/create", auth, tutorials.create);
 
-    app.get("/tutorials", auth, tutorials.getAllTutorials);
+    app.get("/tutorials", auth, tutorials.findAll);
 
-    app.get("/tutorial/:id", tutorials.getTutorialById);
+    app.get("/tutorials/:id", tutorials.getTutorialById);
 
-    app.post("/tutorial/edit", auth, tutorials.postEditTutorial);
+    app.post("/tutorials/edit", auth, tutorials.postEditTutorial);
 
-    app.post("/tutorial/delete", auth, tutorials.postDeleteTutorial);   
+    app.post("/tutorials/delete", auth, tutorials.postDeleteTutorial);   
 
     app.use('/api', router);
 };
