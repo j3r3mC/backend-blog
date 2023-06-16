@@ -10,7 +10,7 @@ module.exports = app => {
 
   app.get("/users/:id", users.getUserById);
 
-  app.post("/users/edit", users.postEditUser);
+  app.put("/users/:id", users.postEditUser);
 
   app.post("/users/delete", users.postDeleteUser);
 
