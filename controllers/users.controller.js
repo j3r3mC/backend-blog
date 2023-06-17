@@ -108,11 +108,11 @@ exports.postEditUser = async (req, res, next) => {
   const updatedName = req.body.name;
   const updatedEmail = req.body.email;
   try {
-    await User.findByIdAndUpdate(id, {
+    await User.updateOne(id, {
       name: updatedName,
-      email: updatedEmail
+      email: updatedEmail,
     });
-    res.send(req.body);
+    res.send(res.body);
     //res.redirect("/");
   } catch (err) {
     console.log(err)
