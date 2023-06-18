@@ -57,24 +57,19 @@ exports.getTutorialById = (req, res) => {
 
 }
 
+
 exports.postEditTutorial = async (req, res, next) => {
-  const id = req.body.id;
+  const id = req.body.id
   const updatedTitle = req.body.title;
   const updatedDescription = req.body.description;
   const updatedVideo = req.body.video;
-  const updatedAuthor = req.body.author;
-
   try {
-    await Tutorial.findByIdAndUpdate(id, {
+    await Tutorial.updateOne({
       title: updatedTitle,
       description: updatedDescription,
-      video: updatedVideo,
-      author: updatedAuthor,
-
+      video: updatedVideo
     });
-
-    res.send(req.body);
-    //res.redirect("/");
+    res.send(res.body);
   } catch (err) {
     console.log(err)
   }
@@ -84,7 +79,7 @@ exports.postEditTutorial = async (req, res, next) => {
 exports.postDeleteTutorial = async (req, res, next) => {
   const id = req.body.id;
   try {
-    await Tutorial.findByIdAndRemove(id);
+    await Tutorial.updateOne(id);
     res.status(202).send("Tutorial was delete successfully!");
     //res.redirect("/");
   } catch (err) {

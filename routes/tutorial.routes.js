@@ -8,7 +8,7 @@ module.exports = app => {
 
     app.get("/tutorials/:id", tutorials.getTutorialById);
 
-    app.post("/tutorials/edit", tutorials.postEditTutorial);
+    app.put("/tutorials/:id", tutorials.postEditTutorial);
 
     app.post("/tutorials/delete", tutorials.postDeleteTutorial);
 
