@@ -108,7 +108,7 @@ exports.getUserById = (req, res) => {
 }
 
 exports.postEditUser = async (req, res, next) => {
-  const id = req.body.id
+  const id = await req.body.id
   const updatedName = req.body.name;
   const updatedEmail = req.body.email;
   try {
