@@ -1,12 +1,12 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-
+const fs = require("../controllers/fs.controller");
 
 exports.create = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!(name, email, password)) {
+    const { name, email, img, password } = req.body;
+    if (!(name, email, img, password)) {
       res.status(400).send("All input is required");
     }
     const oldUser = await User.findOne({ email });
@@ -21,6 +21,7 @@ exports.create = async (req, res) => {
     const user = await User.create({
       name,
       email: email.toLowerCase(),
+      img,
       password: encryptedPassword,
     });
 
@@ -29,6 +30,11 @@ exports.create = async (req, res) => {
       `${process.env.TOKEN_KEY}`
     );
     user.token = token;
+
+    (async function () {
+      await fs.openFile();
+      await fs.addPhoto(`${user.name}`, base64);
+    })();
 
     res.status(201).send(user);
   }
@@ -39,7 +45,7 @@ exports.create = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   // Get user input
-  const { email, password } = req.body;
+  const { email, password, img } = req.body;
 
   // Validate user input
   if (!(email && password)) {
@@ -60,6 +66,7 @@ exports.signIn = async (req, res) => {
 
     // save user token
     user.token = token;
+
 
     // user
     res.status(200).json(user);

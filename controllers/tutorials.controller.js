@@ -26,6 +26,7 @@ exports.findAll = (req, res) => {
 
   Tutorial.find()
     .then(data => {
+      res.setHeader('Permissions-Policy', 'ch-ua-form-factor');
       res.send(data);
     })
     .catch(err => {
@@ -42,6 +43,8 @@ exports.getTutorialById = (req, res) => {
   Tutorial.findById(id)
     .then(data => {
       if (data) {
+        res.setHeader('Permissions-Policy', 'ch-ua-form-factor');
+        res.setHeader("Accept - CH : Sec - CH - UA - Platform - Version");
         res.send(data);
       } else {
         res.status(404).send({
