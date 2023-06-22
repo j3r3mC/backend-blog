@@ -6,7 +6,6 @@ const express = require("express");
 
 const app = express();
 
-const files = require("./controllers/fs.controller");
 
 var corsOptions = {
   origin: "http://localhost:8081"

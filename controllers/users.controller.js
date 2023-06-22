@@ -1,7 +1,9 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const fs = require("../controllers/fs.controller");
+
+
+
 
 exports.create = async (req, res) => {
   try {
@@ -10,7 +12,6 @@ exports.create = async (req, res) => {
       res.status(400).send("All input is required");
     }
     const oldUser = await User.findOne({ email });
-    console.log(oldUser)
 
     if (oldUser) {
       return res.status(409).send("User already exist. Please sign in!");
@@ -18,24 +19,26 @@ exports.create = async (req, res) => {
 
     encryptedPassword = await bcryptjs.hash(password, 10);
 
+    const uuid = require("uuid");
+    const nameFile = uuid.v1().toString();
+
+    const fs = require("./fs.controller");
+
+    fs.saveImg(nameFile, req.body.img);
+
     const user = await User.create({
       name,
       email: email.toLowerCase(),
-      img,
+      img: nameFile,
       password: encryptedPassword,
     });
+
 
     const token = jwt.sign(
       { user_id: user._id, email },
       `${process.env.TOKEN_KEY}`
     );
     user.token = token;
-
-    (async function () {
-      await fs.openFile();
-      await fs.addPhoto(`${user.name}`, base64);
-    })();
-
     res.status(201).send(user);
   }
   catch (err) {
@@ -54,7 +57,7 @@ exports.signIn = async (req, res) => {
   // Validate if user exist in our database
   const user = await User.findOne({ email });
 
-  if (user && (await bcryptjs.compare(password, user.password))) {
+  if (user && bcryptjs.compare(password, user.password)) {
     // Create token
     const token = jwt.sign(
       { user_id: user._id, email },
@@ -64,10 +67,9 @@ exports.signIn = async (req, res) => {
       }
     );
 
+
     // save user token
     user.token = token;
-
-
     // user
     res.status(200).json(user);
   } else {
