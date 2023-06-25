@@ -119,10 +119,11 @@ exports.getUserById = (req, res) => {
 
 }
 exports.getImage = async (req, res) => {
-  const fs = require("fs");
+  const fs = require("../controllers/fs.controller");
   const fileName = req.body.fileName;
-  const image = fs.readFileSync(`${FILE_URI}${fileName}`, { encoding: "base64" });
-  console.log(image);
+  const image = fs.getImg(fileName);
+
+  res.send(image);
 }
 
 
