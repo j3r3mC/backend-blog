@@ -1,6 +1,8 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const { json } = require("express");
+const FILE_URI = process.env.FILE_URI;
 
 
 
@@ -96,12 +98,13 @@ exports.getAllUsers = (req, res) => {
 };
 
 exports.getUserById = (req, res) => {
+  const fs = require("fs")
   const id = req.params.id;
 
   User.findById(id)
     .then(data => {
       if (data) {
-        res.send(data);
+        res.send(data)
       } else {
         res.status(404).send({
           message: `Cannot find User with id=${id}.`
@@ -115,6 +118,13 @@ exports.getUserById = (req, res) => {
     });
 
 }
+exports.getImage = async (req, res) => {
+  const fs = require("fs");
+  const fileName = req.body.fileName;
+  const image = fs.readFileSync(`${FILE_URI}${fileName}`, { encoding: "base64" });
+  console.log(image);
+}
+
 
 exports.postEditUser = async (req, res, next) => {
   const id = await req.body.id
