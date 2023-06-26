@@ -118,9 +118,10 @@ exports.getUserById = (req, res) => {
     });
 
 }
-exports.getImage = async (req, res) => {
+exports.getImage = (req, res) => {
+  console.log("req: " + req.body.data);
   const fs = require("../controllers/fs.controller");
-  const fileName = req.body.fileName;
+  const fileName = req.params.file + ".jpg";
   const image = fs.getImg(fileName);
 
   res.send(image);

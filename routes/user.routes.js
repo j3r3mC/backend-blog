@@ -14,7 +14,7 @@ module.exports = app => {
 
   app.post("/users/delete", users.postDeleteUser);
 
-  app.get("/users/:id/image", users.getImage);
+  app.get("/users/:id/:file", users.getImage);
 
   //route for test middleware login
   app.post("/welcome", (req, res) => {
