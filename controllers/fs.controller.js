@@ -12,10 +12,11 @@ exports.saveImg = (nameFile, base64) => {
 
 exports.getImg = (fileName) => {
     console.log("fileName: " + fileName);
+
     const encodedFile = fileName
         ? fs.readFileSync(`${FILE_URI}${fileName}`, { encoding: "base64" })
         : console.log("FAILLED");
-    console.log("encoded file: " + JSON.stringify(encodedFile));
+
     return encodedFile;
 }
 
