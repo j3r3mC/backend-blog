@@ -129,13 +129,20 @@ exports.getImage = (req, res) => {
 
 
 exports.postEditUser = async (req, res, next) => {
+  const fs = require("./fs.controller");
+  const email = req.body.email
+  const user = await User.findOne({ email });
   const id = await req.body.id
   const updatedName = req.body.name;
   const updatedEmail = req.body.email;
+  fs.saveImg(user.img, req.body.img);
+  const updatedImg = user.img;
+
   try {
     await User.updateOne(id, {
       name: updatedName,
       email: updatedEmail,
+      img: updatedImg,
     });
     res.send(res.body);
     //res.redirect("/");
