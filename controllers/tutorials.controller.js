@@ -1,4 +1,5 @@
 const Tutorial = require("../models/tutorial.model");
+const { findById } = require("../models/user.model");
 
 
 exports.create = async (req, res) => {
@@ -80,14 +81,27 @@ exports.postEditTutorial = async (req, res, next) => {
 };
 
 exports.postDeleteTutorial = async (req, res, next) => {
-  const id = req.body.id;
-  try {
-    await Tutorial.updateOne(id);
-    res.status(202).send("Tutorial was delete successfully!");
-    //res.redirect("/");
-  } catch (err) {
-    console.log(err)
-  }
+  const id = req.params.id;
+  console.log(id)
+  const tuto = Tutorial.findById(id)
+  Tutorial.findByIdAndDelete(id)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+        });
+      } else {
+        res.send({
+          message: "Tutorial was deleted successfully!"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Tutorial with id=" + id
+      });
+    });
+
 };
 
 

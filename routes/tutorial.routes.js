@@ -10,7 +10,7 @@ module.exports = app => {
 
     app.put("/tutorials/:id", tutorials.postEditTutorial);
 
-    app.post("/tutorials/delete", tutorials.postDeleteTutorial);
+    app.delete("/tutorials/:id", tutorials.postDeleteTutorial);
 
     app.use('/api', router);
 };

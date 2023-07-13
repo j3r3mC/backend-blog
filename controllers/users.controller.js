@@ -153,11 +153,10 @@ exports.postEditUser = async (req, res, next) => {
 };
 
 exports.postDeleteUser = async (req, res, next) => {
-  const id = req.body.id;
+  const id = req.params.id;
   try {
     await User.findByIdAndRemove(id);
     res.status(202).send("User was delete successfully!");
-    //res.redirect("/");
   } catch (err) {
     console.log(err)
   }
